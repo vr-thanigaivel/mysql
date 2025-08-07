@@ -1,0 +1,476 @@
+Employee Table
+Step 1: Create the Employee Table
+CREATE TABLE Employee (
+    EmpID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Department VARCHAR(50),
+    Gender VARCHAR(10),
+    Salary DECIMAL(10, 2),
+    Age INT,
+    Experience INT
+);
+Inserting the table
+
+INSERT INTO Employee (EmpID, Name, Department, Gender, Salary, Age, Experience) VALUES
+(1, 'Alice', 'HR', 'Female', 50000, 28, 3),
+(2, 'Bob', 'Finance', 'Male', 60000, 32, 5),
+(3, 'Charlie', 'IT', 'Male', 70000, 30, 6),
+(4, 'David', 'HR', 'Male', 48000, 45, 20),
+(5, 'Eva', 'IT', 'Female', 72000, 29, 4),
+(6, 'Frank', 'Finance', 'Male', 58000, 35, 8),
+(7, 'Grace', 'Marketing', 'Female', 50000, 27, 2),
+(8, 'Hannah', 'IT', 'Female', 75000, 31, 7),
+(9, 'Ivy', 'Finance', 'Female', 62000, 26, 3),
+(10, 'Jack', 'Marketing', 'Male', 52000, 38, 10),
+(11, 'Kiran', 'IT', 'Male', 68000, 33, 9),
+(12, 'Lily', 'HR', 'Female', 55000, 40, 15),
+(13, 'Mohan', 'Finance', 'Male', 61000, 29, 4),
+(14, 'Nina', 'Marketing', 'Female', 53000, 36, 11),
+(15, 'Oscar', 'IT', 'Male', 71000, 34, 10);
+
+ANSWERS:
+1.	Find total salary per department.
+select department, sum(salary) from employee group by department;
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| HR         |   153000.00 |
+| Finance    |   241000.00 |
+| IT         |   356000.00 |
+| Marketing  |   155000.00 |
++------------+-------------+         
+2.List departments where total salary exceeds 200000.
+select department, sum(salary) from employee group by department having sum(salary)>200000;
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| Finance    |   241000.00 |
+| IT         |   356000.00 |
+	
+
+3. Count number of employees in each department.
+select  department ,count(Name) from employee group by department;
++------------+-------------+
+| department | count(Name) |
++------------+-------------+
+| HR         |           3 |
+| Finance    |           4 |
+| IT         |           5 |
+| Marketing  |           3 |
++------------+-------------+
+4. List departments with more than 3 employees.
+     select department,count(empid) from employee group by department having count(empid)>3;
++------------+--------------+
+| department | count(empid) |
++------------+--------------+
+| Finance    |            4 |
+| IT         |            5 |
++------------+--------------+
+5. Find average salary by gender.
+select avg(salary),gender from employee group by gender;
++--------------+--------+
+| avg(salary)  | gender |
++--------------+--------+
+| 59571.428571 | Female |
+| 61000.000000 | Male   |
+	
+
+6. Show gender-wise employee count, only if count is more than 5.
+select  gender ,count(Name) from employee group by gender having count(name)>5;
++--------+-------------+
+| gender | count(Name) |
++--------+-------------+
+| Female |           7 |
+| Male   |           8 |
+	
+
+7.List departments with average salary above 60000.
+select department ,avg(salary) from employee group by department having avg(salary)>60000;
++------------+--------------+
+| department | avg(salary)  |
++------------+--------------+
+| Finance    | 60250.000000 |
+| IT         | 71200.000000 |
+8. List number of male and female employees per department
+         select  department,gender ,count(Name) from employee group by department,gender having count(name);
++------------+--------+-------------+
+| department | gender | count(Name) |
++------------+--------+-------------+
+| HR         | Female |           2 |
+| Finance    | Male   |           3 |
+| IT         | Male   |           3 |
+| HR         | Male   |           1 |
+| IT         | Female |           2 |
+| Marketing  | Female |           2 |
+| Finance    | Female |           1 |
+| Marketing  | Male   |           1 |
+9. Find departments where the average experience is more than 7 years.
+       select  department ,avg(experience) from employee group by department having avg(experience)>7;
++------------+-----------------+
+| department | avg(experience) |
++------------+-----------------+
+| HR         |         12.6667 |
+| IT         |          7.2000 |
+| Marketing  |          7.6667 |
+10. List departments where the max salary is above 7000 select  department ,sum(salary) from employee group by department having sum(salary)>70000;
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| HR         |   153000.00 |
+| Finance    |   241000.00 |
+| IT         |   356000.00 |
+| Marketing  |   155000.00 |
++------------+-------------+
+11. Find average age by department.
+       select department,avg(age) from employee group by department;
++------------+----------+
+| department | avg(age) |
++------------+----------+
+| HR         |  37.6667 |
+| Finance    |  30.5000 |
+| IT         |  31.4000 |
+| Marketing  |  33.6667 |
+
+12. List all departments where female employees earn more than 60000 on average.
+            select department ,gender, avg(salary) from employee group by department ,gender having gender='female' and avg(salary)>60000;
++------------+--------+--------------+
+| department | gender | avg(salary)  |
++------------+--------+--------------+
+| IT         | Female | 73500.000000 |
+| Finance    | Female | 62000.000000 |
+
+
+13. Find departments with total experience greater than 20 years.
+           select department,sum(experience) from employee group by department having sum(experience)>20;
++------------+-----------------+
+| department | sum(experience) |
++------------+-----------------+
+| HR         |              38 |
+| IT         |              36 |
+| Marketing  |              23 |
+
+14. Find gender-wise average experience per department.
+     select department,gender ,avg(experience) from employee group by department,gender;
++------------+--------+-----------------+
+| department | gender | avg(experience) |
++------------+--------+-----------------+
+| HR         | Female |          9.0000 |
+| Finance    | Male   |          5.6667 |
+| IT         | Male   |          8.3333 |
+| HR         | Male   |         20.0000 |
+| IT         | Female |          5.5000 |
+| Marketing  | Female |          6.5000 |
+| Finance    | Female |          3.0000 |
+| Marketing  | Male   |         10.0000 |
+
+15. List departments where average age is under 30.
+         select department ,avg(age) from employee group by department having avg(age)<30;
+Empty set (0.00 sec)
+
+16. Find departments where more than one female is working.
+
+select department ,gender, count(name) from employee group by department ,gender having gender='female' and count(name)>1;
++------------+--------+-------------+
+| department | gender | count(name) |
++------------+--------+-------------+
+| HR         | Female |           2 |
+| IT         | Female |           2 |
+| Marketing  | Female |           2 |
+
+17.Find departments where both male and female employees exist.
+select department from employee group by department having count(distinct(gender))=2;
++------------+
+| department |
++------------+
+| Finance    |
+| HR         |
+| IT         |
+| Marketing  |
++------------+
+18. List departments with highest average experience.
+select department,avg(experience) from employee group by department order by avg(experience) desc limit 1;
++------------+-----------------+
+| department | avg(experience) |
++------------+-----------------+
+| HR         |         12.6667 |
+19.Find gender and department combinations where total salary is above 100000.
+select gender,department,sum(salary) from employee group by gender,department having sum(salary)>100000;
++--------+------------+-------------+
+| gender | department | sum(salary) |
++--------+------------+-------------+
+| Female | HR         |   105000.00 |
+| Male   | Finance    |   179000.00 |
+| Male   | IT         |   209000.00 |
+| Female | IT         |   147000.00 |
+| Female | Marketing  |   103000.00 |
++--------+------------+-------------+
+20.Show department-wise count of employees under age 35.
+select department,count(age) from employee group by department having count(age)<35;
++------------+------------+
+| department | count(age) |
++------------+------------+
+| HR         |          3 |
+| Finance    |          4 |
+| IT         |          5 |
+| Marketing  |          3 |
+21. List top 3 departments with highest total salary.
+   select department,sum(salary) from employee group by department order by sum(salary) desc limit 3;
++------------+-------------+
+| department | sum(salary) |
++------------+-------------+
+| IT         |   356000.00 |
+| Finance    |   241000.00 |
+| Marketing  |   155000.00 |
+	
+                 
+     22. List departments where all employees have more than 5 years of experience.
+               select  distinct department from employee where experience>5;
++------------+
+| department |
++------------+
+| IT         |
+| HR         |
+| Finance    |
+| Marketing  |
+23. Find departments where at least one employee earns less than 55000.
+
+
+
+
+
+Sales table
+Step 1: Create the Example Table
+CREATE TABLE Sales (
+    SaleID INT PRIMARY KEY,
+    Salesperson VARCHAR(50),
+    Region VARCHAR(50),
+    Product VARCHAR(50),
+    Quantity INT,
+    SaleAmount DECIMAL(10,2)
+);
+ Step 2: Insert Sample Data
+INSERT INTO Sales (SaleID, Salesperson, Region, Product, Quantity, SaleAmount) VALUES
+(1, 'Alice', 'North', 'Laptop', 1, 1000.00),
+(2, 'Bob', 'South', 'Mouse', 3, 75.00),
+(3, 'Alice', 'North', 'Monitor', 2, 300.00),
+(4, 'Charlie', 'East', 'Keyboard', 1, 50.00),
+(5, 'Bob', 'South', 'Monitor', 1, 150.00),
+(6, 'Alice', 'North', 'Mouse', 2, 50.00),
+(7, 'Charlie', 'East', 'Laptop', 2, 2000.00),
+(8, 'David', 'West', 'Laptop', 1, 1100.00),
+(9, 'David', 'West', 'Mouse', 4, 100.00),
+(10, 'Eve', 'South', 'Monitor', 3, 450.00),
+(11, 'Eve', 'South', 'Keyboard', 2, 100.00),
+(12, 'Eve', 'South', 'Mouse', 1, 25.00),
+(13, 'Alice', 'North', 'Keyboard', 1, 60.00),
+(14, 'Bob', 'South', 'Laptop', 1, 1200.00),
+(15, 'Charlie', 'East', 'Mouse', 2, 50.00);
+
+
+
+1.Find total quantity sold by each salesperson.
+SELECT Salesperson, SUM(Quantity) AS TotalQuantity FROM Sales GROUP BY Salesperson;
++-------------+---------------+
+| Salesperson | TotalQuantity |
++-------------+---------------+
+| Alice       |             6 |
+| Bob         |             5 |
+| Charlie     |             5 |
+| David       |             5 |
+| Eve         |             6 |
++-------------+---------------+
+2.Find salespersons who sold more than 5 items in total.
+SELECT Salesperson FROM Sales GROUP BY Salesperson HAVING SUM(Quantity) > 5;
++-------------+
+| Salesperson |
++-------------+
+| Alice       |
+| Eve         |
+3.Find number of products sold by each salesperson.
+SELECT Salesperson, COUNT(*) AS TotalSales FROM Sales GROUP BY Salesperson;
++-------------+------------+
+| Salesperson | TotalSales |
++-------------+------------+
+| Alice       |          4 |
+| Bob         |          3 |
+| Charlie     |          3 |
+| David       |          2 |
+| Eve         |          3 |
++-------------+------------+
+4.List regions where total sale amount exceeded $1000.
+SELECT Region  FROM Sales GROUP BY region HAVING SUM(SaleAmount) > 1000;
++--------+
+| Region |
++--------+
+| North  |
+| South  |
+| East   |
+| West   
+5.Show salespersons who made more than 2 sales transactions.
+  SELECT Salesperson FROM Sales GROUP BY Salesperson HAVING COUNT(*) > 2;
++-------------+
+| Salesperson |
++-------------+
+| Alice       |
+| Bob         |
+| Charlie     |
+| Eve         |
+6.Find total sale amount by product, and show only products that made over $500 in sales.
+SELECT Product, SUM(SaleAmount) AS TotalSales FROM Sales GROUP BY Product HAVING SUM(SaleAmount) > 500;
++---------+------------+
+| Product | TotalSales |
++---------+------------+
+| Laptop  |    5300.00 |
+| Monitor |     900.00 |
+7.Show the total quantity sold of each product in each region.
+SELECT Region, Product, SUM(Quantity) AS TotalQuantity FROM Sales GROUP BY Region, Product;
++--------+----------+---------------+
+| Region | Product  | TotalQuantity |
++--------+----------+---------------+
+| North  | Laptop   |             1 |
+| South  | Mouse    |             4 |
+| North  | Monitor  |             2 |
+| East   | Keyboard |             1 |
+| South  | Monitor  |             4 |
+| North  | Mouse    |             2 |
+| East   | Laptop   |             2 |
+| West   | Laptop   |             1 |
+| West   | Mouse    |             4 |
+| South  | Keyboard |             2 |
+| North  | Keyboard |             1 |
+| South  | Laptop   |             1 |
+| East   | Mouse    |             2 |
++--------+----------+---------------+
+8.Find salespersons who sold more than 1 type of product.
+SELECT Salesperson FROM Sales GROUP BY Salesperson HAVING COUNT(DISTINCT Product) > 1;
++-------------+
+| Salesperson |
++-------------+
+| Alice       |
+| Bob         |
+| Charlie     |
+| David       |
+| Eve         |
+9.Find the average quantity per product sold per region, where the average is greater than 1
+SELECT Region, Product, AVG(Quantity) FROM Sales GROUP BY Region, Product HAVING AVG(Quantity) > 1;
++--------+----------+---------------+
+| Region | Product  | AVG(Quantity) |
++--------+----------+---------------+
+| South  | Mouse    |        2.0000 |
+| North  | Monitor  |        2.0000 |
+| South  | Monitor  |        2.0000 |
+| North  | Mouse    |        2.0000 |
+| East   | Laptop   |        2.0000 |
+| West   | Mouse    |        4.0000 |
+| South  | Keyboard |        2.0000 |
+| East   | Mouse    |        2.0000 |
+10.Show salespersons whose total sale amount is between $500 and $1500.
+SELECT Salesperson, SUM(SaleAmount) FROM Sales GROUP BY Salesperson HAVING SUM(SaleAmount) BETWEEN 500 AND 1500;
++-------------+-----------------+
+| Salesperson | SUM(SaleAmount) |
++-------------+-----------------+
+| Alice       |         1410.00 |
+| Bob         |         1425.00 |
+| David       |         1200.00 |
+| Eve         |          575.00 |
+
+11.List top-performing products (more than 3 units sold in total).
+SELECT Product, SUM(Quantity) FROM Sales GROUP BY Product HAVING SUM(Quantity) > 3;
++----------+---------------+
+| Product  | SUM(Quantity) |
++----------+---------------+
+| Laptop   |             5 |
+| Mouse    |            12 |
+| Monitor  |             6 |
+| Keyboard |             4 |
+
+12.List salespersons who sold laptops.
+SELECT DISTINCT Salesperson FROM Sales WHERE Product = 'Laptop';
++-------------+
+| Salesperson |
++-------------+
+| Alice       |
+| Charlie     |
+| David       |
+| Bob         |
+
+13.Find total sale amount per salesperson per region, only where it exceeds $500.
+SELECT Salesperson, Region, SUM(SaleAmount) FROM Sales GROUP BY Salesperson, Region HAVING SUM(SaleAmount) > 500;
++-------------+--------+-----------------+
+| Salesperson | Region | SUM(SaleAmount) |
++-------------+--------+-----------------+
+| Alice       | North  |         1410.00 |
+| Bob         | South  |         1425.00 |
+| Charlie     | East   |         2100.00 |
+| David       | West   |         1200.00 |
+| Eve         | South  |          575.00 |
+14.Find salespersons who sold at least 2 different products in a single region.
+SELECT Salesperson, Region FROM Sales GROUP BY Salesperson, Region HAVING COUNT(DISTINCT Product) >= 2;
++-------------+--------+
+| Salesperson | Region |
++-------------+--------+
+| Alice       | North  |
+| Bob         | South  |
+| Charlie     | East   |
+| David       | West   |
+| Eve         | South  |
+15.Find products that were sold in more than one region.
+SELECT Product FROM Sales GROUP BY Product HAVING COUNT(DISTINCT Region) > 1;
++----------+
+| Product  |
++----------+
+| Keyboard |
+| Laptop   |
+| Monitor  |
+| Mouse    |
+16.Show total number of sales per product and hide products with fewer than 2 sales.
+SELECT Product, COUNT(*) FROM Sales
+    -> GROUP BY Product
+    -> HAVING COUNT(*) >= 2;
++----------+----------+
+| Product  | COUNT(*) |
++----------+----------+
+| Laptop   |        4 |
+| Mouse    |        5 |
+| Monitor  |        3 |
+| Keyboard |        3 |
+17.Find region-wise total quantity sold by each salesperson.
+SELECT Region, Salesperson, SUM(Quantity) FROM Sales GROUP BY Region, Salesperson;
++--------+-------------+---------------+
+| Region | Salesperson | SUM(Quantity) |
++--------+-------------+---------------+
+| North  | Alice       |             6 |
+| South  | Bob         |             5 |
+| East   | Charlie     |             5 |
+| West   | David       |             5 |
+| South  | Eve         |             6 |
+18.Find salespersons who made more than 3 transactions and total sales amount is over 
+$1000.
+SELECT Salesperson, COUNT(*) AS Transactions, SUM(SaleAmount) AS TotalSales
+    -> FROM Sales
+    -> GROUP BY Salesperson
+    -> HAVING COUNT(*) > 3 AND SUM(SaleAmount) > 1000;
++-------------+--------------+------------+
+| Salesperson | Transactions | TotalSales |
++-------------+--------------+------------+
+| Alice       |            4 |    1410.00 |
+19.Find average sale amount per region and show only regions with average above $200.
+SELECT Region, AVG(SaleAmount) from sales GROUP BY Region
+    -> HAVING AVG(SaleAmount) > 200;
++--------+-----------------+
+| Region | AVG(SaleAmount) |
++--------+-----------------+
+| North  |      352.500000 |
+| South  |      333.333333 |
+| East   |      700.000000 |
+| West   |      600.000000 |
+20.List regions and products where more than 3 units were sold.
+SELECT Region, Product, SUM(Quantity) FROM Sales group by region,product HAVING SUM(Quantity) > 3;
++--------+---------+---------------+
+| Region | Product | SUM(Quantity) |
++--------+---------+---------------+
+| South  | Mouse   |             4 |
+| South  | Monitor |             4 |
+| West   | Mouse   |             4 |
+
+
